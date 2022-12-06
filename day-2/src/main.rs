@@ -32,7 +32,7 @@ struct Item<'a> {
     name: (&'a str, &'a str),
     value: u32,
     wins: u32,
-    cheat: u32,
+    cheat: u8,
 }
 
 impl Item<'_> {
@@ -48,46 +48,50 @@ impl Item<'_> {
         }
     }
 
-    fn get_loser(loses_to: u32) -> Self {
-        if loses_to == ROCK.value {
+    fn get_loser(winner: u32) -> Self {
+        if winner == ROCK.value {
             return ROCK;
         }
-        if loses_to == PAPER.value {
+        if winner == PAPER.value {
             return PAPER;
         }
         return SCISSORS;
     }
 
-    fn get_winner(wins_to: u32) -> Self {
-        if wins_to == ROCK.wins {
+    fn get_winner(value: u32) -> Self {
+        if value == ROCK.wins {
             return ROCK;
         }
-        if wins_to == PAPER.wins {
+        if value == PAPER.wins {
             return PAPER;
         }
         return SCISSORS;
     }
 }
 
+const LOSE: u8 = 0;
+const DRAW: u8 = 1;
+const WIN: u8 = 2;
+
 const ROCK: Item = Item {
     name: ("X", "A"),
     value: 1,
     wins: 3,
-    cheat: 0,
+    cheat: LOSE,
 };
 
 const PAPER: Item = Item {
     name: ("Y", "B"),
     value: 2,
     wins: 1,
-    cheat: 1,
+    cheat: DRAW,
 };
 
 const SCISSORS: Item = Item {
     name: ("Z", "C"),
     value: 3,
     wins: 2,
-    cheat: 2,
+    cheat: WIN,
 };
 
 struct Play<'a> {
@@ -118,12 +122,12 @@ impl Play<'_> {
     }
 
     pub fn get_cheat_score(&self) -> u32 {
-        if self.player.cheat == 0 {
+        if self.player.cheat == LOSE {
             let loses_to = Item::get_loser(self.enemy.wins);
             return loses_to.value;
         }
 
-        if self.player.cheat == 1 {
+        if self.player.cheat == DRAW {
             return self.enemy.value + 3;
         }
 
