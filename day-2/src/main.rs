@@ -1,8 +1,6 @@
 use std::fs;
 
 fn main() {
-    println!("Hello, world!");
-
     let input = fs::read_to_string("input").unwrap();
 
     let lines = input.lines().collect::<Vec<&str>>();
@@ -120,23 +118,16 @@ impl Play<'_> {
     }
 
     pub fn get_cheat_score(&self) -> u32 {
-        println!(
-            "Player cheat: {}, Enemy pick is {}",
-            self.player.cheat, self.enemy.name.1
-        );
         if self.player.cheat == 0 {
             let loses_to = Item::get_loser(self.enemy.wins);
-            println!("So I LOSE with: {}", loses_to.name.1);
             return loses_to.value;
         }
 
         if self.player.cheat == 1 {
-            println!("I DRAW with: {}", self.enemy.name.1);
             return self.enemy.value + 3;
         }
 
         let wins_to = Item::get_winner(self.enemy.value);
-        println!("So i WIN with: {}", wins_to.name.1);
         return wins_to.value + 6;
     }
 }
