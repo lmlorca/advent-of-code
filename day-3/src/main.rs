@@ -34,8 +34,6 @@ fn main() {
 
             uniq.iter().sum::<usize>()
         })
-        .collect::<Vec<usize>>()
-        .iter()
         .sum();
 
     let val_vect = input
