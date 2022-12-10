@@ -28,14 +28,14 @@ fn main() {
     println!("Cheat score: {}", max_cheat_score);
 }
 
-struct Item<'a> {
+struct Hand<'a> {
     name: (&'a str, &'a str),
     value: u32,
     wins: u32,
     cheat: u8,
 }
 
-impl Item<'_> {
+impl Hand<'_> {
     fn from_input(input: &str) -> Self {
         if input == ROCK.name.1 || input == ROCK.name.0 {
             ROCK
@@ -73,21 +73,21 @@ const LOSE: u8 = 0;
 const DRAW: u8 = 1;
 const WIN: u8 = 2;
 
-const ROCK: Item = Item {
+const ROCK: Hand = Hand {
     name: ("X", "A"),
     value: 1,
     wins: 3,
     cheat: LOSE,
 };
 
-const PAPER: Item = Item {
+const PAPER: Hand = Hand {
     name: ("Y", "B"),
     value: 2,
     wins: 1,
     cheat: DRAW,
 };
 
-const SCISSORS: Item = Item {
+const SCISSORS: Hand = Hand {
     name: ("Z", "C"),
     value: 3,
     wins: 2,
@@ -95,17 +95,17 @@ const SCISSORS: Item = Item {
 };
 
 struct Play<'a> {
-    player: Item<'a>,
-    enemy: Item<'a>,
+    player: Hand<'a>,
+    enemy: Hand<'a>,
 }
 
 impl Play<'_> {
     fn new(line: &str) -> Play<'_> {
         let (enemy_input, player_input) = line.split_at(1);
 
-        let player = Item::from_input(player_input.trim());
+        let player = Hand::from_input(player_input.trim());
 
-        let enemy = Item::from_input(enemy_input.trim());
+        let enemy = Hand::from_input(enemy_input.trim());
 
         Play { player, enemy }
     }
@@ -123,7 +123,7 @@ impl Play<'_> {
 
     pub fn get_cheat_score(&self) -> u32 {
         if self.player.cheat == LOSE {
-            let loses_to = Item::get_loser(self.enemy.wins);
+            let loses_to = Hand::get_loser(self.enemy.wins);
             return loses_to.value;
         }
 
@@ -131,7 +131,7 @@ impl Play<'_> {
             return self.enemy.value + 3;
         }
 
-        let wins_to = Item::get_winner(self.enemy.value);
+        let wins_to = Hand::get_winner(self.enemy.value);
         return wins_to.value + 6;
     }
 }

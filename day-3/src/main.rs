@@ -24,15 +24,12 @@ fn main() {
                 .filter(|x| right.contains(x))
                 .collect::<Vec<usize>>();
 
-            let mut uniq: Vec<usize> = vec![];
+            let mut uniq: usize = 0;
 
             for value in in_both.iter() {
-                if !uniq.contains(value) {
-                    uniq.push(*value);
-                }
+                uniq = *value
             }
-
-            uniq.iter().sum::<usize>()
+            uniq
         })
         .sum();
 
@@ -57,15 +54,14 @@ fn main() {
         })
         .filter(|item| item.len() == 3)
         .map(|group| {
-            let mut uniq = vec![];
+            let mut uniq: usize = 0;
 
             for value in group[0].iter() {
-                if group[1].contains(value) && group[2].contains(value) && !uniq.contains(value) {
-                    uniq.push(*value);
+                if group[1].contains(value) && group[2].contains(value) {
+                    uniq = *value;
                 }
             }
-
-            uniq.iter().sum::<usize>()
+            uniq
         })
         .sum::<usize>();
 
