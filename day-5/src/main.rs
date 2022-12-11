@@ -1,6 +1,6 @@
 use std::fs;
 
-const PART: u8 = 2;
+const PART: u8 = 1;
 
 fn main() {
     let input = fs::read_to_string("input").unwrap();
